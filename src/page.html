@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <title>酒店地图</title>
+  <style>/*__CSS__*/</style>
+</head>
+<body>
+  <main class="phone" id="phone" aria-label="酒店地图">
+    <div class="map" id="map" aria-label="北京酒店示例地图" aria-busy="true"></div>
+    <div class="phone-top">
+      <div class="status" aria-hidden="true">
+        <span>9:41</span><i class="island"></i>
+        <span class="status-icons"><i class="signal"></i><i class="wifi"></i><i class="battery"></i></span>
+      </div>
+      <div class="corners">
+        <button id="back" type="button" aria-label="回到初始地图视角" title="回到初始地图视角"><i></i></button>
+        <div class="capsule" aria-hidden="true"><i class="dots"></i><i class="ring"></i></div>
+      </div>
+    </div>
+    <div id="mapError" role="status" hidden></div>
+    <a class="attribution" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a>
+    <i class="home-bar" aria-hidden="true"></i>
+  </main>
+  <script>/*__MAPLIBRE__*/</script>
+  <script>/*__DATA__*/</script>
+  <script>/*__BASE__*/</script>
+  <script>/*__MARKERS__*/</script>
+  <script>/*__APP__*/</script>
+</body>
+</html>
