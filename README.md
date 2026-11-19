@@ -6,8 +6,8 @@ A small, offline-friendly MapLibre GL JS demo of continuous map zoom with hotel-
 
 - Scroll or pinch to zoom. Nearby hotels merge as you zoom out and split as you zoom in.
 - Click a cluster to animate to the zoom level where it expands. A cluster is a rounded pill, while a single-hotel price marker uses a pointer to indicate its location.
-- Markers compete for screen space, with priority given to the selected hotel or its cluster.
-- Marker transitions use a 160 ms fade and respect the system's reduced-motion preference. The upper-left arrow resets the camera.
+- Price markers slide out from a cluster on split and move toward the new center on merge. Transitions combine position and opacity and respect the system's reduced-motion preference.
+- Each animation frame checks the space occupied by the bubbles, with priority given to the selected hotel or its cluster. The upper-left arrow resets the camera.
 
 The map starts in Beijing with 49 synthetic hotels. The basemap is bundled with the page, so the downloadable HTML also works offline in a recent browser with WebGL. No account, API key, or tile service is required.
 
@@ -15,6 +15,7 @@ The map starts in Beijing with 49 synthetic hotels. The basemap is bundled with 
 
 - [Camera and UI](src/app.js) sets up the MapLibre map and initial viewport.
 - [Marker rendering and clustering](src/hotel-markers.js) uses a clustered GeoJSON source, symbol collision, and the cluster's expansion zoom.
+- [Cluster transitions](src/cluster-motion.js) match markers through their shared hotels, interpolate positions, and check for collisions on each animation frame.
 - [Basemap style](src/basemap.js) draws roads, parks and water from the bundled geographic data.
 
 To rebuild with Node.js 18 or later:

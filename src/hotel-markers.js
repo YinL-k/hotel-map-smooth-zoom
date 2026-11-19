@@ -1,4 +1,4 @@
-function createHotelMarkers({ map, hotels, home, drawLogo, padding, onSelect, onError }) {
+function createHotelMarkers({ map, hotels, home, drawLogo, padding, onSelect, onError, motionFactory }) {
   const money = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
   const priority = { none: 1, plain: 2, perk: 3, advantage: 4 };
   const hotelById = new Map(hotels.map(hotel => [hotel.hotelId, hotel]));
@@ -104,12 +104,14 @@ function createHotelMarkers({ map, hotels, home, drawLogo, padding, onSelect, on
       clusterProperties: {
         selectedRank: ['max', ['get', 'selectedRank']],
         revision: ['max', ['get', 'revision']],
+        ...(motionFactory && { members: ['concat', ['get', 'members']] }),
       },
     });
     const grouped = ['has', 'point_count'];
     const picked = ['>', ['get', 'selectedRank'], 0];
     map.addLayer({
       id: 'hotel-prices', source: 'hotels', type: 'symbol',
+      ...(motionFactory && { paint: { 'icon-opacity': 0 } }),
       layout: {
         'icon-image': ['case', grouped,
           ['concat', 'group|', ['to-string', ['get', 'point_count']], '|', ['to-string', ['get', 'selectedRank']]],
@@ -139,6 +141,7 @@ function createHotelMarkers({ map, hotels, home, drawLogo, padding, onSelect, on
         properties: {
           hotelId: hotel.hotelId, icon, z: selected ? 5 : priority[hotel.kind],
           selectedRank: selected ? hotel.rank : 0, revision,
+          ...(motionFactory && { members: hotel.rank + ',' }),
         },
       };
     });
@@ -172,8 +175,11 @@ function createHotelMarkers({ map, hotels, home, drawLogo, padding, onSelect, on
   map.on('styleimagemissing', event => addSprite(event.id));
   function attach() {
     addHotelLayer();
-    map.on('click', 'hotel-prices', onMarkerClick);
     map.on('movestart', event => { if (event.originalEvent) cancelPending(); });
+    if (motionFactory) {
+      return motionFactory({ map, onMarkerClick });
+    }
+    map.on('click', 'hotel-prices', onMarkerClick);
     map.on('mouseenter', 'hotel-prices', () => { map.getCanvas().style.cursor = 'pointer'; });
     map.on('mouseleave', 'hotel-prices', () => { map.getCanvas().style.cursor = ''; });
   }

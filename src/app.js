@@ -53,9 +53,11 @@
         markers.update(hotels, hotel);
       },
       onError: message => errors.push(message),
+      motionFactory: typeof createClusterMotion === 'function' ? createClusterMotion : null,
     });
     map.once('load', () => {
-      markers.attach();
+      const motion = markers.attach();
+      if (motion) window.HotelDemo.motion = motion;
       markers.update(hotels, state.selected);
       document.getElementById('back').onclick = () => {
         markers.cancelPending();

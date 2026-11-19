@@ -11,6 +11,7 @@ const parts = {
   DATA: (await read('src/demo-hotels.js')) + '\n' + (await read('src/hotel-fixtures.js')),
   BASE: (await read('src/basemap.js')).replace('/*__MAP_DATA__*/', data.toString('base64')),
   MARKERS: await read('src/hotel-markers.js'),
+  MOTION: await read('src/cluster-motion.js'),
   APP: await read('src/app.js'),
 };
 
